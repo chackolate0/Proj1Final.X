@@ -8,11 +8,8 @@
   @File Name
  proj1.c
 
-  @Summary
-    Brief description of the file.
-
   @Description
-    Describe the purpose of this file.
+ * Uses button presses to perform different LED patterns (rotate and ramp up/down)
  */
 // PIC32MX370F512L Configuration Bit Settings
 
@@ -80,7 +77,6 @@
 #include "adc.h"        //include Digilent ADC (analog to digital converter) library
 #include "btn.h"        //include Digilent BTN (push button) library
 #include "led.h"        //include Digilent LED (light emmitting diode) library
-//#include "ssd.h"      //include Digilent SSD (seven segment display) library
 #include "rgbled.h"     //include Digilent RGBLED (red/green/blue LED) library
 #define FOSC (80000000L)
 #define CORE_TICK_PERIOD (FOSC/20)
@@ -97,9 +93,9 @@ int main(void){
     INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);
     mConfigIntCoreTimer(CT_INT_ON | CT_INT_PRIOR_5 | CT_INT_SUB_PRIOR_0);
     INTEnableSystemMultiVectoredInt();
-    TRISA = 0x8000;
+    TRISA = 0xFF00;
     ANSELA = 0x0;
-    LATA = 0x0;
+    LATA = 0x0000000000;
     TRISF = 0x1;
     ANSELF = 0x0;
     TRISB = 0x107;

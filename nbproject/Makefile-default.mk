@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=btn.c lcd.c proj1.c "../../OneDrive - University of Delaware - o365/Fall 2018/CPEG/Labs/LibPack.X/ssd.c" utils.c
+SOURCEFILES_QUOTED_IF_SPACED=btn.c lcd.c proj1.c "../../OneDrive - University of Delaware - o365/Fall 2018/CPEG/Labs/LibPack.X/ssd.c" utils.c ../LibPack.X/adc.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/btn.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/proj1.o ${OBJECTDIR}/_ext/237760056/ssd.o ${OBJECTDIR}/utils.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/btn.o.d ${OBJECTDIR}/lcd.o.d ${OBJECTDIR}/proj1.o.d ${OBJECTDIR}/_ext/237760056/ssd.o.d ${OBJECTDIR}/utils.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/btn.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/proj1.o ${OBJECTDIR}/_ext/237760056/ssd.o ${OBJECTDIR}/utils.o ${OBJECTDIR}/_ext/1784141561/adc.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/btn.o.d ${OBJECTDIR}/lcd.o.d ${OBJECTDIR}/proj1.o.d ${OBJECTDIR}/_ext/237760056/ssd.o.d ${OBJECTDIR}/utils.o.d ${OBJECTDIR}/_ext/1784141561/adc.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/btn.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/proj1.o ${OBJECTDIR}/_ext/237760056/ssd.o ${OBJECTDIR}/utils.o
+OBJECTFILES=${OBJECTDIR}/btn.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/proj1.o ${OBJECTDIR}/_ext/237760056/ssd.o ${OBJECTDIR}/utils.o ${OBJECTDIR}/_ext/1784141561/adc.o
 
 # Source Files
-SOURCEFILES=btn.c lcd.c proj1.c ../../OneDrive - University of Delaware - o365/Fall 2018/CPEG/Labs/LibPack.X/ssd.c utils.c
+SOURCEFILES=btn.c lcd.c proj1.c ../../OneDrive - University of Delaware - o365/Fall 2018/CPEG/Labs/LibPack.X/ssd.c utils.c ../LibPack.X/adc.c
 
 
 CFLAGS=
@@ -136,6 +136,12 @@ ${OBJECTDIR}/utils.o: utils.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/utils.o 
 	@${FIXDEPS} "${OBJECTDIR}/utils.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/utils.o.d" -o ${OBJECTDIR}/utils.o utils.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/_ext/1784141561/adc.o: ../LibPack.X/adc.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1784141561" 
+	@${RM} ${OBJECTDIR}/_ext/1784141561/adc.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1784141561/adc.o 
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1784141561/adc.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1784141561/adc.o.d" -o ${OBJECTDIR}/_ext/1784141561/adc.o ../LibPack.X/adc.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	
 else
 ${OBJECTDIR}/btn.o: btn.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -166,6 +172,12 @@ ${OBJECTDIR}/utils.o: utils.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/utils.o.d 
 	@${RM} ${OBJECTDIR}/utils.o 
 	@${FIXDEPS} "${OBJECTDIR}/utils.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/utils.o.d" -o ${OBJECTDIR}/utils.o utils.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/_ext/1784141561/adc.o: ../LibPack.X/adc.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1784141561" 
+	@${RM} ${OBJECTDIR}/_ext/1784141561/adc.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1784141561/adc.o 
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1784141561/adc.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1784141561/adc.o.d" -o ${OBJECTDIR}/_ext/1784141561/adc.o ../LibPack.X/adc.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
 endif
 

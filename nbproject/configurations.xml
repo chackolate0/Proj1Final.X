@@ -25,6 +25,7 @@
       <itemPath>proj1.c</itemPath>
       <itemPath>../../OneDrive - University of Delaware - o365/Fall 2018/CPEG/Labs/LibPack.X/ssd.c</itemPath>
       <itemPath>utils.c</itemPath>
+      <itemPath>../LibPack.X/adc.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -32,6 +33,9 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>../LibPack.X</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="default" type="2">
