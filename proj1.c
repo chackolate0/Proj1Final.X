@@ -95,7 +95,7 @@ int main(void){
     INTEnableSystemMultiVectoredInt();
     TRISA = 0xFF00;
     ANSELA = 0x0;
-    LATA = 0x0000000000;
+    LATA = 0b0000000000;
     TRISF = 0x1;
     ANSELF = 0x0;
     TRISB = 0x107;
