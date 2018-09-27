@@ -83,10 +83,15 @@
 
 #define DELAY_BTN 50              //50 ms 1953
 
+#define Min_ms          10             //minimum update/shift time in ms
+#define Max_ms          1000            //maximum update/shift time in ms
+
 /* TODO:  Include other files here if needed. */
 
 int btnState = 0; //Default value of 0 so the lights don't move, 1 means shift right, 2 will shift left, 3 will ramp up from LD0 and 4 will ramp up from LD7.
 int delayLed = 0;
+int aicVal = 0;
+int ledDelay = 0;
 
 int main(void){
     OpenCoreTimer(CORE_TICK_PERIOD);
@@ -107,55 +112,59 @@ int main(void){
     char delayStr[80];
     
     while(1){
-        delayLed = ADC_AnalogRead(2) * .9678 + 10;
+        aicVal = ADC_AnalogRead(2); // Read the ADC Value set by the Analog Input Control pot
+        ledDelay = (aicVal * (Max_ms - Min_ms)) / 1023 + Min_ms; //convert to delay in ms
+        //delayLed = ADC_AnalogRead(2) * 0.967742 + 10;
         //delayLed = ADC_AnalogRead(2) * (990/1023) + 10;
-        sprintf(delayStr, "Delay: %4dms", delayLed);
+        sprintf(delayStr, "Delay: %4d ms", ledDelay);
         LCD_WriteStringAtPos(delayStr, 1, 0);
         if(btnState==1){
-        if(PORTAbits.RA0){
-            LATA = 0x80;
+            delay_ms(ledDelay);
+            if(PORTAbits.RA0){
+                LATA = 0x80;
+            }
+            else{
+                 LATA = PORTA >> 1;
+            }
+        }
+        else if(btnState==2){
+            delay_ms(ledDelay);
+            if(PORTAbits.RA7){
+                LATA = 0x01;
+            }
+            else{
+                 LATA = PORTA << 1;
+            }
+        }
+        else if(btnState==3){
+            delay_ms(ledDelay);
+            if(PORTAbits.RA7){
+                LATA = 0x01;
+            }
+            else{
+                LATA = PORTA * 2 + 1;
+            }
+        }
+        else if(btnState==4){
+            delay_ms(ledDelay);
+            if(PORTAbits.RA0){
+                LATA = 0x80;
+            }
+            else{
+                LATA = PORTA | (PORTA / 2);
+            }
         }
         else{
-             LATA = PORTA >> 1;
+            //
         }
-    }
-    else if(btnState==2){
-        if(PORTAbits.RA7){
-            LATA = 0x01;
-        }
-        else{
-             LATA = PORTA << 1;
-        }
-    }
-    else if(btnState==3){
-        if(PORTAbits.RA7){
-            LATA = 0x01;
-        }
-        else{
-            LATA = PORTA * 2 + 1;
-        }
-    }
-    else if(btnState==4){
-        if(PORTAbits.RA0){
-            LATA = 0x80;
-        }
-        else{
-            LATA = PORTA | (PORTA / 2);
-        }
-    }
-    else{
-        //
-    }
     
-    delay_ms(delayLed);
-        
     }
 }
 
 void delay_ms(int ms) {
     int i, counter;
     for (counter = 0; counter < ms; counter++) {
-        for (i = 0; i < 1300; i++) {
+        for (i = 0; i < 1400; i++) {
         } //software delay ~1 millisec 
     }
 }
