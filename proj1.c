@@ -50,8 +50,6 @@
 #pragma config BWP = OFF                // Boot Flash Write Protect bit (Protection Disabled)
 #pragma config CP = OFF                 // Code Protect (Protection Disabled)
 
-#define DELAY_LED 7813              //200 ms
-#define DELAY_BTN 1953              //50 ms
 
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
@@ -84,32 +82,92 @@
 #include "led.h"        //include Digilent LED (light emmitting diode) library
 //#include "ssd.h"      //include Digilent SSD (seven segment display) library
 #include "rgbled.h"     //include Digilent RGBLED (red/green/blue LED) library
-#define FOSC 80000000
-#define CORE_TICK_PERIOD (FOSC/100)
+#define FOSC (80000000L)
+#define CORE_TICK_PERIOD (FOSC/20)
+
+#define DELAY_BTN 50              //50 ms 1953
+
 /* TODO:  Include other files here if needed. */
 
 int btnState = 0; //Default value of 0 so the lights don't move, 1 means shift right, 2 will shift left, 3 will ramp up from LD0 and 4 will ramp up from LD7.
+int delayLed = 0;
 
 int main(void){
     OpenCoreTimer(CORE_TICK_PERIOD);
+    INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);
     mConfigIntCoreTimer(CT_INT_ON | CT_INT_PRIOR_5 | CT_INT_SUB_PRIOR_0);
     INTEnableSystemMultiVectoredInt();
-    //int WAIT = 200;
     TRISA = 0x8000;
     ANSELA = 0x0;
     LATA = 0x0;
     TRISF = 0x1;
     ANSELF = 0x0;
-    TRISB = 0x103;
-    ANSELB = 0x0;
+    TRISB = 0x107;
+    ANSELB = 0x4;
     T1CON = 0x8030;
     LCD_Init();
+    ADC_Init();
     LCD_WriteStringAtPos("Team 1", 0, 0);
     char delayStr[80];
-    sprintf(delayStr, "Delay: %d", DELAY_LED);
-    LCD_WriteStringAtPos(delayStr, 1, 0);
+    
     while(1){
-        if(PORTFbits.RF0){
+        delayLed = ADC_AnalogRead(2) * .9678 + 10;
+        //delayLed = ADC_AnalogRead(2) * (990/1023) + 10;
+        sprintf(delayStr, "Delay: %4dms", delayLed);
+        LCD_WriteStringAtPos(delayStr, 1, 0);
+        if(btnState==1){
+        if(PORTAbits.RA0){
+            LATA = 0x80;
+        }
+        else{
+             LATA = PORTA >> 1;
+        }
+    }
+    else if(btnState==2){
+        if(PORTAbits.RA7){
+            LATA = 0x01;
+        }
+        else{
+             LATA = PORTA << 1;
+        }
+    }
+    else if(btnState==3){
+        if(PORTAbits.RA7){
+            LATA = 0x01;
+        }
+        else{
+            LATA = PORTA * 2 + 1;
+        }
+    }
+    else if(btnState==4){
+        if(PORTAbits.RA0){
+            LATA = 0x80;
+        }
+        else{
+            LATA = PORTA | (PORTA / 2);
+        }
+    }
+    else{
+        //
+    }
+    
+    delay_ms(delayLed);
+        
+    }
+}
+
+void delay_ms(int ms) {
+    int i, counter;
+    for (counter = 0; counter < ms; counter++) {
+        for (i = 0; i < 1300; i++) {
+        } //software delay ~1 millisec 
+    }
+}
+
+void __ISR(_CORE_TIMER_VECTOR, ipl5) _CoreTimerHandler(void){
+    mCTClearIntFlag(); //clear interrupt
+    
+    if(PORTFbits.RF0){
             delay_ms(DELAY_BTN);
             btnState = 0;
         }
@@ -133,67 +191,7 @@ int main(void){
             btnState = 4;
             LATA = 0x80;
         }
-        
-    }
-}
 
-/*void delay_ms(int ms) {
-    TMR1 = 0;
-    while(TMR1 < ms){
-        
-    }
-}*/
-
-void delay_ms(int ms) {
-    int i, counter;
-    for (counter = 0; counter < ms; counter++) {
-        for (i = 0; i < 30; i++) {
-        } //software delay ~1 millisec 
-    }
-}
-
-void __ISR(_CORE_TIMER_VECTOR, ipl5) _CoreTimerHandler(void){
-    mCTClearIntFlag(); //clear interrupt
-    
-    if(btnState==1){
-        delay_ms(DELAY_LED);
-        if(PORTAbits.RA0){
-            LATA = 0x80;
-        }
-        else{
-             LATA = PORTA >> 1;
-        }
-    }
-    else if(btnState==2){
-        delay_ms(DELAY_LED);
-        if(PORTAbits.RA7){
-            LATA = 0x01;
-        }
-        else{
-             LATA = PORTA << 1;
-        }
-    }
-    else if(btnState==3){
-        delay_ms(DELAY_LED);
-        if(PORTAbits.RA7){
-            LATA = 0x01;
-        }
-        else{
-            LATA = PORTA * 2 + 1;
-        }
-    }
-    else if(btnState==4){
-        delay_ms(DELAY_LED);
-        if(PORTAbits.RA0){
-            LATA = 0x80;
-        }
-        else{
-            LATA = PORTA | (PORTA / 2);
-        }
-    }
-    else{
-        //
-    }
     UpdateCoreTimer(CORE_TICK_PERIOD);  //update period
     
 }
