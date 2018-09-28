@@ -1,13 +1,10 @@
 /* ************************************************************************** */
 /** Descriptive File Name
-
   @Company
  CPEG 222 Team #1
  * Alex Chacko & Matias Saavedra
-
   @File Name
  proj1.c
-
   @Description
  * Uses button presses to perform different LED patterns (rotate and ramp up/down)
  */
@@ -112,14 +109,14 @@ int main(void){
     char delayStr[80];
     
     while(1){
-        aicVal = ADC_AnalogRead(2); // Read the ADC Value set by the Analog Input Control pot
-        ledDelay = (aicVal * (Max_ms - Min_ms)) / 1023 + Min_ms; //convert to delay in ms
-        //delayLed = ADC_AnalogRead(2) * 0.967742 + 10;
+        //aicVal = ADC_AnalogRead(2); // Read the ADC Value set by the Analog Input Control pot
+        //ledDelay = (aicVal * (Max_ms - Min_ms)) / 1023 + Min_ms; //convert to delay in ms
+        delayLed = ADC_AnalogRead(2) * 0.967742 + 10;
         //delayLed = ADC_AnalogRead(2) * (990/1023) + 10;
-        sprintf(delayStr, "Delay: %4d ms", ledDelay);
+        sprintf(delayStr, "Delay: %4d ms", delayLed);
         LCD_WriteStringAtPos(delayStr, 1, 0);
         if(btnState==1){
-            delay_ms(ledDelay);
+//            delay_ms(delayLed);
             if(PORTAbits.RA0){
                 LATA = 0x80;
             }
@@ -128,7 +125,7 @@ int main(void){
             }
         }
         else if(btnState==2){
-            delay_ms(ledDelay);
+//            delay_ms(delayLed);
             if(PORTAbits.RA7){
                 LATA = 0x01;
             }
@@ -137,7 +134,7 @@ int main(void){
             }
         }
         else if(btnState==3){
-            delay_ms(ledDelay);
+//            delay_ms(delayLed);
             if(PORTAbits.RA7){
                 LATA = 0x01;
             }
@@ -146,7 +143,7 @@ int main(void){
             }
         }
         else if(btnState==4){
-            delay_ms(ledDelay);
+//            delay_ms(delayLed);
             if(PORTAbits.RA0){
                 LATA = 0x80;
             }
@@ -157,6 +154,7 @@ int main(void){
         else{
             //
         }
+        delay_ms(delayLed);
     
     }
 }
@@ -173,28 +171,28 @@ void __ISR(_CORE_TIMER_VECTOR, ipl5) _CoreTimerHandler(void){
     mCTClearIntFlag(); //clear interrupt
     
     if(PORTFbits.RF0){
-            delay_ms(DELAY_BTN);
             btnState = 0;
+            delay_ms(DELAY_BTN);
         }
         else if(PORTBbits.RB8){
-            delay_ms(DELAY_BTN);
             btnState = 1;
             LATA = 0x80;
+            delay_ms(DELAY_BTN);
         }
         else if(PORTBbits.RB0){
-            delay_ms(DELAY_BTN);
             btnState = 2;
             LATA = 0x1;
+            delay_ms(DELAY_BTN);
         }
         else if(PORTBbits.RB1){
-            delay_ms(DELAY_BTN);
             btnState = 3;
             LATA = 0x1;
+            delay_ms(DELAY_BTN);
             }
         else if(PORTAbits.RA15){
-            delay_ms(DELAY_BTN);
             btnState = 4;
             LATA = 0x80;
+            delay_ms(DELAY_BTN);
         }
 
     UpdateCoreTimer(CORE_TICK_PERIOD);  //update period
