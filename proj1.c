@@ -80,8 +80,8 @@
 
 #define DELAY_BTN 50              //50 ms 1953
 
-#define Min_ms          10             //minimum update/shift time in ms
-#define Max_ms          1000            //maximum update/shift time in ms
+//#define Min_ms          10             //minimum update/shift time in ms
+//#define Max_ms          1000            //maximum update/shift time in ms
 
 /* TODO:  Include other files here if needed. */
 
@@ -174,26 +174,26 @@ void __ISR(_CORE_TIMER_VECTOR, ipl5) _CoreTimerHandler(void){
             btnState = 0;
             delay_ms(DELAY_BTN);
         }
-        else if(PORTBbits.RB8){
-            btnState = 1;
-            LATA = 0x80;
-            delay_ms(DELAY_BTN);
+    else if(PORTBbits.RB8){
+        btnState = 1;
+        LATA = 0x80;
+        delay_ms(DELAY_BTN);
+    }
+    else if(PORTBbits.RB0){
+        btnState = 2;
+        LATA = 0x1;
+        delay_ms(DELAY_BTN);
+    }
+    else if(PORTBbits.RB1){
+        btnState = 3;
+        LATA = 0x1;
+        delay_ms(DELAY_BTN);
         }
-        else if(PORTBbits.RB0){
-            btnState = 2;
-            LATA = 0x1;
-            delay_ms(DELAY_BTN);
-        }
-        else if(PORTBbits.RB1){
-            btnState = 3;
-            LATA = 0x1;
-            delay_ms(DELAY_BTN);
-            }
-        else if(PORTAbits.RA15){
-            btnState = 4;
-            LATA = 0x80;
-            delay_ms(DELAY_BTN);
-        }
+    else if(PORTAbits.RA15){
+        btnState = 4;
+        LATA = 0x80;
+        delay_ms(DELAY_BTN);
+    }
 
     UpdateCoreTimer(CORE_TICK_PERIOD);  //update period
     
